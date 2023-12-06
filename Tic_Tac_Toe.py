@@ -1,51 +1,55 @@
-def sum(a, b, c ):
-    return a + b + c
+# if xstate[0] == 'X': return'X' else if zstate[0]=='O':return'O' else: return 0
+def sum(a,b,c):
+    return a+b+c
 
-def printBoard(xState, zState):
-    zero = 'X' if xState[0] else ('O' if zState[0] else 0)
-    one = 'X' if xState[1] else ('O' if zState[1] else 1)
-    two = 'X' if xState[2] else ('O' if zState[2] else 2)
-    three = 'X' if xState[3] else ('O' if zState[3] else 3)
-    four = 'X' if xState[4] else ('O' if zState[4] else 4)
-    five = 'X' if xState[5] else ('O' if zState[5] else 5)
-    six = 'X' if xState[6] else ('O' if zState[6] else 6)
-    seven = 'X' if xState[7] else ('O' if zState[7] else 7)
-    eight = 'X' if xState[8] else ('O' if zState[8] else 8)
-    print(f"{zero} | {one} | {two} ")
-    print(f"--|---|---")
-    print(f"{three} | {four} | {five} ")
-    print(f"--|---|---")
-    print(f"{six} | {seven} | {eight} ") 
+def board(xstate, zstate):
+    print(f"{'X' if xstate[0] else 'O' if zstate[0] else 1} | {'X' if xstate[1] else 'O' if zstate[1] else 2} | {'X' if xstate[2] else 'O' if zstate[2] else 3}")
+    print("--|---|--")
+    print(f"{'X' if xstate[3] else 'O' if zstate[3] else 4} | {'X' if xstate[4] else 'O' if zstate[4] else 5} | {'X' if xstate[5] else 'O' if zstate[5] else 6}")
+    print("--|---|--")
+    print(f"{'X' if xstate[6] else 'O' if zstate[6] else 7} | {'X' if xstate[7] else 'O' if zstate[7] else 8} | {'X' if xstate[8] else 'O' if zstate[8] else 9}")
 
-def checkWin(xState, zState):
-    wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+def checkwin(xstate, zstate):
+
+    wins = [[0,1,2],[3,4,5],[6,7,8],[0,4,6],[2,4,6],[0,3,6],[1,4,7],[2,5,6]]
+
     for win in wins:
-        if(sum(xState[win[0]], xState[win[1]], xState[win[2]]) == 3):
-            print("X Won the match")
+        if sum(xstate[win[0]],xstate[win[1]],xstate[win[2]])==3:
+            print(f"{p1} wins")
             return 1
-        if(sum(zState[win[0]], zState[win[1]], zState[win[2]]) == 3):
-            print("O Won the match")
+        elif sum(zstate[win[0]],zstate[win[1]],zstate[win[2]])==3:
+            print(f"{p2} wins")
             return 0
     return -1
-    
+
 if __name__ == "__main__":
-    xState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    zState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    turn = 1 # 1 for X and 0 for O
-    print("Welcome to Tic Tac Toe")
-    while(True):
-        printBoard(xState, zState)
-        if(turn == 1):
-            print("X's Chance")
-            value = int(input("Please enter a value: "))
-            xState[value] = 1
+    xstate = [0,0,0,0,0,0,0,0,0]
+    zstate = [0,0,0,0,0,0,0,0,0]
+    board(xstate, zstate)
+    turn = 1 #if 1 then x 0 then O
+    print("Welcome to Tic_Tac_Toe 2P Game")
+    p1 = input("Please Enter Player1(X) name: ")
+    p2 = input("Please Enter Player2(Y) name: ")
+
+    for i in range(0,9):
+        if turn == 1:
+            print(f"{p1}'s chance")
+            value = int(input("Enter a place to mark X: "))
+            if xstate[value-1]==0 and zstate[value-1]==0:
+                xstate[value-1]=1
+            else:
+                print("That's already occupided, please try again.")
+                continue
         else:
-            print("O's Chance")
-            value = int(input("Please enter a value: "))
-            zState[value] = 1
-        cwin = checkWin(xState, zState)
-        if(cwin != -1):
-            print("Match over")
+            print(f"{p2}'s chance")
+            value = int(input("Enter a place to mark O: "))
+            if zstate[value-1]==0 and xstate[value-1]==0:
+                zstate[value-1]=1
+            else:
+                print("That's already occupided, please try again.")
+                continue
+        check = checkwin(xstate,zstate)
+        board(xstate,zstate)
+        if check != -1:
             break
-        
-        turn = 1 - turn
+        turn = 1- turn
